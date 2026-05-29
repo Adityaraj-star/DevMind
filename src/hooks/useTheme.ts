@@ -13,7 +13,7 @@ export function useTheme() {
         } else {
             document.documentElement.classList.remove('dark')
         }
-    })
+    }, [theme])
 
     const toggleTheme = () => setTheme(p => p === 'dark' ? 'light' : 'dark')
 
