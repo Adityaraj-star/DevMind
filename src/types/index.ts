@@ -30,3 +30,38 @@ export type AnalysisResult = {
     repoUrl?: string
     language: "javascript" | "typescript"
 }
+
+// one row in a database table(a saved analysis)
+export type AnalysisRecord = {
+    id: string
+    title: string
+    sourceType: "paste" | "github"
+    repoUrl?: string
+    language: "javascript" | "typescript"
+    createdAt: string   // ISO string - safe for localStorage
+    status: AnalysisStatus
+    fileCount?: number
+}
+
+// entire database(all global state)
+export type AppState = {
+    theme: Theme
+    analyses: AnalysisRecord[]
+    activeAnalysisId: string | null
+    sidebarOpen: boolean
+    currentStatus: AnalysisStatus   // status of the current running operation
+    errorMessage: string | null
+}
+
+// every allowed db operation
+export type AppAction = 
+    | { type: 'TOGGLE_THEME' }
+    | { type: 'TOGGLE_SIDEBAR' }
+    | { type: 'SET_SIDEBAR'; payload: boolean }
+    | { type: 'ADD_ANALYSIS'; payload: AnalysisRecord }
+    | { type: 'DELETE_ANALYSIS'; payload: string }
+    | { type: 'SET_ACTIVE_ANALYSIS'; payload: string | null }
+    | { type: 'SET_STATUS'; payload: AnalysisStatus }
+    | { type: 'SET_ERROR'; payload: string }
+    | { type: 'CLEAR_ERROR' }
+    | { type: 'UPDATE_ANALYSIS'; payload: {id: string; updates: Partial<AnalysisRecord>} }
