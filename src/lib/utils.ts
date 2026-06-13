@@ -43,3 +43,30 @@ export function getNodeColor(type: FileNode["type"]): string {
     }
     return colorMap[type]
 }
+
+export function formatRelativeTime(isoString: string): string {
+    const date = new Date(isoString)
+    return formatDate(date)
+}
+
+export function extractRepoName(url: string): string {
+    try {
+        const parts = new URL(url).pathname.split("/").filter(Boolean)
+        return parts[parts.length - 1] ?? "Unknown repo"
+    } catch {
+        return "Unknown repo"       // not a valid URL
+    }
+}
+
+export function isGitHubUrl(str: string): boolean {
+    try {
+        const url = new URL(str)
+        return url.hostname === "github.com"
+    } catch {
+        return false
+    }
+}
+
+export function pluralize(count: number, word: string): string {
+    return `${count} ${word}${count === 1 ? "": "s"}`
+}
