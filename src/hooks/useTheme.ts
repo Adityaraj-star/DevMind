@@ -1,21 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useAppContext } from "../context/AppContext"
 import type { Theme } from '../types'
 
-export function useTheme() {
-    const [theme, setTheme] = useState<Theme>(() => {
-        return (localStorage.getItem('devmind-theme') as Theme) ?? 'dark'
-    })
+// custom hook that manages dark/light theme
+export function useTheme(): { theme: Theme; toggleTheme: () => void } {
+    const { state, dispatch } = useAppContext()
 
-    useEffect(() => {
-        localStorage.setItem('devmind-theme', theme)
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    }, [theme])
+    const toggleTheme = () => dispatch({ type: "TOGGLE_THEME" })
 
-    const toggleTheme = () => setTheme(p => p === 'dark' ? 'light' : 'dark')
-
-    return { theme, toggleTheme }
+    return { theme: state.theme, toggleTheme }
 }
