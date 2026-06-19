@@ -1,17 +1,12 @@
+import { useLocation, Link } from "react-router-dom"
 import { cn } from "../../lib/utils"
 import { Button } from '../ui/Button'
-import type { Theme } from '../../types'
+import { useAppContext } from "../../context/AppContext"
 
-interface NavbarProps {
-    theme: Theme
-    onToggleTheme: () => void
-    className?: string
-}
 
 const NAV_ITEMS = [
-    { label: 'Explore', href: '#explore' },
-    { label: 'Analyze', href: '#analyze' },
-    { label: "Docs", href: "#docs" },
+    { label: "Home",    to: "/" },
+    { label: "Analyze", to: "/analyze" },
 ] as const
 
 function SunIcon() {
@@ -45,11 +40,11 @@ function MoonIcon() {
     )
 }
 
-export function Navbar({
-    theme, 
-    onToggleTheme,
-    className
-}: NavbarProps) {
+export function Navbar() {
+    const { state, dispatch } = useAppContext()
+
+    const location = useLocation()
+
     return (
         <header
             className={cn(
@@ -58,61 +53,92 @@ export function Navbar({
                 "bg-zinc-950/90",
                 "backdrop-blur-md",
                 "border-b border-zinc-800/60",
-                className
             )}
         >
-            <a 
-                href="/" 
-                className="flex items-center"
-                aria-label="DevMind home"
-            >
-                <span className={cn(
-                    "font-mono font-bold text-lg tracking-tight",
-                    "text-zinc-100",
-                    "group-hover:text-white transition-colors duration-200"
-                )}>
-                    Dev
-                </span>
-                <span className={cn(
-                    "font-mono font-bold text-lg tracking-tight",
-                    "text-violet-400",
-                    "group-hover:text-violet-300 transition-colors duration-200"
-                )}>
-                    Mind
-                </span>
-                <span className="ml-2 text-[10px] font-mono text-zinc-600 pt-1">
-                    v0.1
-                </span>
-            </a>
-
-            <nav className="hidden md:flex items-center gap-1">
-                {NAV_ITEMS.map((item) => (
-                    <a
-                        key={item.label}
-                        href={item.href}
-                        className={cn(
-                            "px-3 py-1.5",
-                            "text-sm text-zinc-400",
-                            "rounded-md",
-                            "hover:text-zinc-100 hover:bg-zinc-800/60",
-                            "transition-colors duration-150",
-                            "font-medium tracking-wide"
-                        )}
+            <div className="flex items-center gap-2">
+                {/*Show toggle button only if analyses exist*/}
+                {state.analyses.length > 0 && (
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-8 h-8 p-0"
+                        onClick={() => dispatch({ type: "TOGGLE_SIDEBAR" })}
+                        aria-label={state.sidebarOpen ? "Close history" : "Open history"} 
                     >
-                        {item.label}
-                    </a>
-                ))}
+
+                        <svg 
+                            width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                            {state.sidebarOpen
+                                ? <path d="M18 6L6 18M6 6l12 12" />
+                                : <path d="M4 6h16M4 12h16M4 18h16" />
+                            }
+                        </svg>
+                    </Button>
+                )}
+
+                <Link to="/" className="flex items-center group" aria-label="DevMind home">
+                    <span className={cn(
+                        "font-mono font-bold text-lg tracking-tight",
+                        "text-zinc-100 group-hover:text-white transition-colors duration-200"
+                    )}>
+                        Dev
+                    </span>
+                    <span className={cn(
+                        "font-mono font-bold text-lg tracking-tight",
+                        "text-violet-400 group-hover:text-violet-300 transition-colors duration-200"
+                    )}>
+                        Mind
+                    </span>
+                    <span className="ml-2 text-[10px] font-mono text-zinc-600 pt-1">
+                        v0.1
+                    </span>
+                </Link>
+            </div>
+
+            <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
+                {NAV_ITEMS.map((item) => {
+                    const isActive = location.pathname === item.to
+
+                    return (
+                        <Link
+                            key={item.label}
+                            to={item.to}
+
+                            aria-current={isActive ? "page" : undefined}
+                            className={cn(
+                                "px-3 py-1.5 text-sm rounded-md",
+                                "transition-colors duration-150 font-medium tracking-wide",
+                                isActive
+
+                                    ? "text-zinc-100 bg-zinc-800"
+                                
+                                    : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60"
+                            )}
+                        >
+                            {item.label}
+                        </Link>
+                    )
+                    
+                })}
             </nav>
 
             <div className="flex items-center gap-2">
+
+                {state.analyses.length > 0 && (
+                    <span className="hidden md:flex items-center gap-1.5 text-xs text-zinc-500 font-mono">
+                        <span className="w-1.5 h-1.5 rounded-full bg-violet-500/60" aria-hidden="true" />
+                        {state.analyses.length} {state.analyses.length === 1 ? "analysis" : "analyses"}
+                    </span>
+                )}
                 <Button
                     variant="ghost"
                     size="sm"
-                    onClick={onToggleTheme}
-                    aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                    onClick={() => dispatch({ type: "TOGGLE_THEME" })}
+                    aria-label={state.theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
                     className="w-9 h-9 p-0"
                 >
-                    {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+                    {state.theme === "dark" ? <SunIcon /> : <MoonIcon />}
                 </Button>
 
                 <Button
@@ -124,16 +150,12 @@ export function Navbar({
                     GitHub
                 </Button>
 
-                <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => {
-                        const el = document.getElementById("analyze-section")
-                        el?.scrollIntoView({ behavior: "smooth" })
-                    }}
-                >
-                    Analyze code
-                </Button>
+                {/*Analyze code CTA*/}
+                <Link to="/analyze">
+                    <Button variant="primary" size="sm">
+                        Analyze code
+                    </Button>
+                </Link>
             </div>
         </header>
     )
