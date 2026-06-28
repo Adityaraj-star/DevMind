@@ -7,6 +7,7 @@ import { useAppContext } from "../context/AppContext"
 import { Button } from "../components/ui/Button"
 import { Input } from "../components/ui/Input"
 import { cn, generateId, isGitHubUrl, extractRepoName } from "../lib/utils"
+import { parsePastedCode, generateDemoGraphData } from "../lib/parser"
 import type { AnalysisRecord } from "../types"
 
 
@@ -46,7 +47,8 @@ export function Analyze() {
     
     // submit handler for Github form
     const onSubmitGitHub = (data: GitHubFormData) => {
-        // Build an AnalysisRecord from the validated form data
+        const graphData = generateDemoGraphData()
+
         const record: AnalysisRecord = {
             id: generateId(),
             title: extractRepoName(data.url),
@@ -54,7 +56,9 @@ export function Analyze() {
             repoUrl: data.url,
             language: "typescript",
             createdAt: new Date().toISOString(),
-            status: "idle",
+            status: "ready",
+            fileCount: graphData.stats.totalFiles,
+            graphData,
         }
 
         dispatch({ type: "ADD_ANALYSIS", payload: record })
@@ -64,13 +68,17 @@ export function Analyze() {
 
     // submit handler for paste form
     const onSubmitPaste = (code: string, language: "javascript" | "typescript") => {
+        const graphData = parsePastedCode(code, language)
+
         const record: AnalysisRecord = {
             id: generateId(),
             title: `Pasted ${language} code`,
             sourceType: "paste",
             language,
             createdAt: new Date().toISOString(),
-            status: "idle",
+            status: "ready",
+            fileCount: graphData.stats.totalFiles,
+            graphData,
         }
         dispatch({ type: "ADD_ANALYSIS", payload: record })
         navigate(`/analysis/${record.id}`)
@@ -182,21 +190,6 @@ export function Analyze() {
                                     {...register("branch")}
                                 />
 
-                                <div className={cn(
-                                    "flex items-start gap-3 p-4 rounded-xl",
-                                    "bg-zinc-800/50 border border-zinc-700/50"
-                                )}>
-                                    <svg className="w-4 h-4 text-violet-400 mt-0.5 shrink-0" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M12 16v-4M12 8h.01" />
-                                    </svg>
-                                    <p className="text-xs text-zinc-500 leading-relaxed">
-                                        GitHub API fetching is implemented in Phase 4. This saves
-                                        the analysis record now — the graph builds when you add your
-                                        GitHub token in Phase 4.
-                                    </p>
-                                </div>
 
                                 <Button
                                     type="submit"
@@ -210,7 +203,7 @@ export function Analyze() {
                                         </svg>
                                     }
                                 >
-                                    Save & analyze
+                                    Generate graph
                                 </Button>
                             </div>
                         </form>
