@@ -96,25 +96,65 @@ function getFilename(path: string): string {
     return path.split(/[/\\]/).pop() ?? path
 }
 
+const PASTE_FILE_DELIMITER = /^\/\/\s*-{2,}\s*file:\s*(.+?)\s*-{2,}\s*$/gm
+
 export function parsePastedCode(
     code: string,
     language: "javascript" | "typescript"
 ): GraphData {
-    const filename = `pasted.${language === "typescript" ? "tsx" : "jsx"}`
-    const parsed = parseCode(code, filename)
+    const ext = language === "typescript" ? "tsx" : "jsx"
+    const files = splitPastedFiles(code, ext)
 
-    const node: GraphNode = {
-        ...parsed,
-        id: parsed.path,
+    const nodes: GraphNode[] = files.map(({ path, content }) => {
+        const parsed = parseCode(content, path)
+        return { ...parsed, id: parsed.path }
+    })
+
+    return buildGraphData(nodes)
+}
+
+function splitPastedFiles(
+    code: string,
+    fallbackExt: string
+): { path: string; content: string }[] {
+    const matches = [...code.matchAll(new RegExp(PASTE_FILE_DELIMITER.source, 'gm'))]
+
+    // No delimiters found → treat the whole paste as one file
+    if (matches.length === 0) {
+        return [{ path: `pasted.${fallbackExt}`, content: code }]
     }
 
-    return buildGraphData([node])
+    const files: { path: string; content: string }[] = []
+
+    for (let i = 0; i < matches.length; i++) {
+        const match = matches[i]
+        const filename = match[1].trim()
+        
+        const contentStart = match.index! + match[0].length
+        const contentEnd = i + 1 < matches.length ? matches[i + 1].index! : code.length
+
+        const content = code.slice(contentStart, contentEnd).trim()
+        if (content.length > 0) {
+            files.push({ path: filename, content })
+        }
+    }
+
+    return files
+}
+
+export function buildGraphDataFromFiles(
+    files: { path: string; content: string }[]
+): GraphData {
+    const nodes: GraphNode[] = files.map(({ path, content }) => {
+        const parsed = parseCode(content, path)
+        return { ...parsed, id: parsed.path }
+    })
+
+    return buildGraphData(nodes)
 }
 
 export function buildGraphData(nodes: GraphNode[]): GraphData {
-    const links: GraphLink[] = []
-
-    const nodePathSet = new Set(nodes.map(n => n.path))
+    const links: GraphLink[] = [] 
     const nodePathArray = nodes.map(n => n.path)
 
     for (const node of nodes) {
