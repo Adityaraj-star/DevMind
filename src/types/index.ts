@@ -42,6 +42,7 @@ export type AnalysisRecord = {
     status: AnalysisStatus
     fileCount?: number
     graphData?: GraphData
+    rawFiles?: { path: string; content: string }[]
 }
 
 // entire database(all global state)
@@ -125,4 +126,46 @@ export type GraphViewState = {
     showInfoPanel: boolean
     activeFilter: 'all' | 'component' | 'hook' | 'util' | 'config'
     transform: { x: number; y: number; k: number }
+}
+
+
+// GitHubRepoInfo - the parsed pieces of a GitHub URL
+export type GitHubRepoInfo = {
+    owner: string
+    repo: string
+    branch?: string
+    path?: string
+}
+
+// GitHubTreeEntry - one row from GitHub's "get tree recursively" response
+export type GitHubTreeEntry = {
+    path: string
+    type: "blob" | "tree"
+    sha: string
+    size?: number            
+    url: string
+}
+
+// GitHubFetchProgress - reported back to the UI while fetching
+export type GitHubFetchProgress = {
+    phase: 'resolving' | 'tree' | 'files' | 'parsing' | 'done'
+    filesCompleted: number
+    filesTotal: number
+    currentFile?: string
+}
+
+// GitHubFetchError - a typed error so the UI can show a SPECIFIC,
+// actionable message instead of a generic "something went wrong"
+export type GitHubFetchError =
+    | { type: 'invalid_url' }
+    | { type: 'not_found' }                                  // repo doesn't exist or is private
+    | { type: 'rate_limited'; resetAt: number }               // resetAt = unix timestamp (seconds)
+    | { type: 'too_large'; fileCount: number; limit: number } // repo exceeds our file cap
+    | { type: 'empty_repo' }                                  // no matching JS/TS files found
+    | { type: 'network_error'; message: string }
+
+export type GitHubTokenState = {
+    token: string | null
+    rateLimitRemaining: number | null
+    rateLimitResetAt: number | null   // unix timestamp seconds
 }
