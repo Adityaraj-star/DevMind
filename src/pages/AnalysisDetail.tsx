@@ -1,22 +1,30 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { PageShell } from "../components/layout/PageShell"
 import { GraphCanvas } from "../components/graph/GraphCanvas"
 import { GraphStatsBar } from "../components/graph/GraphStatsBar"
 import { GraphLegend } from "../components/graph/GraphLegend"
 import { NodeInfoPanel } from "../components/graph/NodeInfoPanel"
+import { GitHubFetchProgress } from "../components/github/GitHubFetchProgress"
+import { GitHubFetchErrorView } from "../components/github/GitHubFetchErrorView"
 import { useAppContext } from "../context/AppContext"
+import { useGitHubToken } from "../hooks/useGitHubToken"
 import { Button } from "../components/ui/Button"
 import { Badge } from "../components/ui/Badge"
 import { cn, formatRelativeTime } from "../lib/utils"
-import { parsePastedCode, generateDemoGraphData } from "../lib/parser"
-import type { GraphNode, SelectedNode, GraphData, GraphViewState } from "../types"
+import { buildGraphDataFromFiles } from "../lib/parser"
+import { parseGitHubUrl, fetchGitHubRepo, MAX_FILES } from "../lib/github"
+import type {
+    GraphNode, GraphData, GraphViewState,
+    GitHubFetchProgress as ProgressType, GitHubFetchError,
+} from "../types"
+
 
 export function AnalysisDetail() {
     const { id } = useParams<{ id: string }>()
-
     const navigate = useNavigate()
     const { state, dispatch } = useAppContext()
+    const githubToken = useGitHubToken()
 
     const [viewState, setViewState] = useState<Omit<GraphViewState, 'transform'>>({
         selectedNode: null,
@@ -25,7 +33,11 @@ export function AnalysisDetail() {
     })
 
     const [graphData, setGraphData] = useState<GraphData | null>(null)
-    const [isParsing, setIsParsing] = useState(false)
+    const [progress, setProgress] = useState<ProgressType | null>(null)
+    const [fetchError, setFetchError] = useState<GitHubFetchError | null>(null)
+    const [retryCount, setRetryCount] = useState(0)
+
+    const activeFetchIdRef = useRef<string | null>(null)
 
     // find the analysis with this id in global state
     const analysis = state.analyses.find(a => a.id === id)
@@ -46,45 +58,86 @@ export function AnalysisDetail() {
     useEffect(() => {
         if (!analysis) return
 
+        setFetchError(null)
+
         if (analysis.graphData) {
             setGraphData(analysis.graphData)
+            setProgress(null)
             return
         }
 
-        setIsParsing(true)
-        dispatch({ type: "SET_STATUS", payload: "parsing" })
+        if (analysis.sourceType === "paste") {
+            setFetchError({ type: 'network_error', message: 'No code data found for this analysis.' })
+            return
+        }
 
-        setTimeout(() => {
+        const repoInfo = analysis.repoUrl ? parseGitHubUrl(analysis.repoUrl) : null
+        if (!repoInfo) {
+            setFetchError({ type: 'invalid_url' })
+            return
+        }
+
+        const fetchId = analysis.id
+        activeFetchIdRef.current = fetchId
+
+        dispatch({ type: "SET_STATUS", payload: "parsing" })
+        setProgress({ phase: 'resolving', filesCompleted: 0, filesTotal: 0 })
+
+        const currentAnalysis = analysis
+
+        async function runFetch() {
             try {
-                let data: GraphData
-                if (analysis.sourceType === "paste") {
-                    data = generateDemoGraphData()
-                } else {
-                    data = generateDemoGraphData()
+                const result = await fetchGitHubRepo(repoInfo!, githubToken.token, {
+                    onRateLimit: githubToken.recordRateLimit,
+                    onProgress: (phase, completed, total, currentFile) => {
+                        if (activeFetchIdRef.current !== fetchId) return
+                        setProgress({ phase, filesCompleted: completed, filesTotal: total, currentFile })
+                    },
+                })
+
+                if (activeFetchIdRef.current !== fetchId) return 
+
+                setProgress({ phase: 'parsing', filesCompleted: result.files.length, filesTotal: result.files.length })
+
+                const data = buildGraphDataFromFiles(result.files)
+
+                if (result.truncated) {
+                    console.info(`[DevMind] Showing ${result.files.length} of more files (truncated at ${MAX_FILES}).`)
                 }
 
-                // save to the record so future visits don't re-parse
                 dispatch({
                     type: "UPDATE_ANALYSIS",
                     payload: {
-                        id: analysis.id,
+                        id: currentAnalysis.id,
                         updates: {
                             graphData: data,
                             fileCount: data.stats.totalFiles,
                             status: "ready",
-                        }
-                    }
+                            rawFiles: result.files,
+                        },
+                    },
                 })
 
                 setGraphData(data)
+                setProgress(null)
                 dispatch({ type: "SET_STATUS", payload: "ready" })
-            } catch {
-                dispatch({ type: "SET_ERROR", payload: "Failed to parse codebase." })
-            } finally {
-                setIsParsing(false)
+            } catch (err) {
+                if (activeFetchIdRef.current !== fetchId) return
+
+                const typedError = err as GitHubFetchError
+                setFetchError(typedError)
+                setProgress(null)
+                dispatch({ type: "SET_ERROR", payload: "Failed to fetch repository." })
             }
-        }, 0)
-    }, [analysis?.id])
+        }
+
+        runFetch()
+
+    }, [analysis?.id, retryCount])
+
+    const handleRetry = useCallback(() => {
+        setRetryCount(n => n + 1)
+    }, [])
 
     const handleNodeClick = useCallback((node: GraphNode) => {
         setViewState(prev => ({
@@ -195,6 +248,17 @@ export function AnalysisDetail() {
                                 {analysis.fileCount} files
                             </span>
                         )}
+
+                        {analysis.repoUrl && (
+                            <a
+                                href={analysis.repoUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-violet-400 hover:text-violet-300 transition-colors font-mono"
+                            >
+                                View on GitHub ↗
+                            </a>
+                        )}
                     </div>
 
                     {/* Right: actions */}
@@ -221,24 +285,14 @@ export function AnalysisDetail() {
                 {/* GRAPH AREA */}
                 <div className="flex-1 flex flex-col min-h-0">
 
-                    {isParsing ? (
-                        // LOADING STATE
-                        <div className="flex-1 flex flex-col items-center justify-center gap-4">
-                            <div className="relative w-12 h-12">
-                                <div className="absolute inset-0 rounded-full border-2
-                                    border-violet-500/20 animate-ping" />
-                                <div className="absolute inset-0 rounded-full border-2
-                                    border-t-violet-400 border-violet-500/20 animate-spin" />
-                            </div>
-                            <div className="text-center">
-                                <p className="text-sm font-medium text-zinc-300 mb-1">
-                                    Parsing codebase…
-                                </p>
-                                <p className="text-xs text-zinc-600">
-                                    Extracting imports, exports, and file relationships
-                                </p>
-                            </div>
-                        </div>
+                    {fetchError ? (
+                        <GitHubFetchErrorView
+                            error={fetchError}
+                            onRetry={handleRetry}
+                            onOpenTokenPanel={() => navigate("/analyze")}
+                        />
+                    ) : progress ? (
+                        <GitHubFetchProgress progress={progress} />
                     ) : graphData ? (
                         // GRAPH VIEW
                         <>
