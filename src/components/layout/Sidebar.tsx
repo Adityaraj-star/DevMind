@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useCallback, memo } from "react"
 import { useNavigate } from "react-router-dom"
 import { cn, formatRelativeTime } from "../../lib/utils"
 import { useAppContext } from "../../context/AppContext"
@@ -20,19 +20,19 @@ export function Sidebar() {
         a.title.toLowerCase().includes(debouncedSearch.toLowerCase())
     )
     
-    const handleSelectAnalysis = (analysis: AnalysisRecord) => {
+    const handleSelectAnalysis = useCallback((analysis: AnalysisRecord) => {
         dispatch({ type: "SET_ACTIVE_ANALYSIS", payload: analysis.id })
         navigate(`/analysis/${analysis.id}`)
 
         if (window.innerWidth < 768) {
             dispatch({ type: "SET_SIDEBAR", payload: false })
         }
-    }
+    }, [navigate, dispatch])
 
-    const handleDelete = (e: React.MouseEvent, id: string) => {
+    const handleDelete = useCallback((e: React.MouseEvent, id: string) => {
         e.stopPropagation() // to stop default behavior of event bubbling
         dispatch({ type: "DELETE_ANALYSIS", payload: id })
-    }
+    }, [dispatch])
 
     return (
         <>
@@ -153,19 +153,32 @@ export function Sidebar() {
 interface AnalysisItemProps {
     analysis: AnalysisRecord
     isActive: boolean
-    onSelect: () => void
-    onDelete: (e: React.MouseEvent) => void
+    onSelect: (analysis: AnalysisRecord) => void
+    onDelete: (e: React.MouseEvent, id: string) => void
 }
 
-function AnalysisItem({ analysis, isActive, onSelect, onDelete }: AnalysisItemProps) {
+
+
+const AnalysisItem =  memo(function AnalysisItem({ analysis, isActive, onSelect, onDelete }: AnalysisItemProps) {
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            onSelect(analysis)
+        }
+    }
+
     return (
         <li>
-            <button
-                onClick={onSelect}
+            <div
+                onClick={() => onSelect(analysis)}
+                onKeyDown={handleKeyDown}
+                role="button"
+                tabIndex={0}
                 className={cn(
                     "group w-full text-left px-3 py-3",
                     "flex items-start gap-3",
-                    "transition-colors duration-100 hover:bg-zinc-900/60",
+                    "transition-colors duration-100 hover:bg-zinc-900/60 cursor-pointer",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/40",
                     isActive && "bg-violet-500/10 border-l-2 border-l-violet-500"
                 )}
                 aria-current={isActive ? "true" : undefined}
@@ -200,7 +213,7 @@ function AnalysisItem({ analysis, isActive, onSelect, onDelete }: AnalysisItemPr
                 </div>
 
                 <button
-                    onClick={onDelete}
+                    onClick={(e) => onDelete(e, analysis.id)}
                     className={cn(
                         "shrink-0 p-1 rounded",
                         "text-zinc-700 hover:text-red-400 hover:bg-red-500/10",
@@ -213,7 +226,7 @@ function AnalysisItem({ analysis, isActive, onSelect, onDelete }: AnalysisItemPr
                         <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
                     </svg>
                 </button>
-            </button>
+            </div>
         </li>
     )
-}
+})
