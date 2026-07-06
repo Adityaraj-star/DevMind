@@ -7,6 +7,7 @@ import { GraphLegend } from "../components/graph/GraphLegend"
 import { NodeInfoPanel } from "../components/graph/NodeInfoPanel"
 import { GitHubFetchProgress } from "../components/github/GitHubFetchProgress"
 import { GitHubFetchErrorView } from "../components/github/GitHubFetchErrorView"
+import { ErrorBoundary } from "../components/ErrorBoundary"
 import { useAppContext } from "../context/AppContext"
 import { useGitHubToken } from "../hooks/useGitHubToken"
 import { Button } from "../components/ui/Button"
@@ -14,6 +15,7 @@ import { Badge } from "../components/ui/Badge"
 import { cn, formatRelativeTime } from "../lib/utils"
 import { buildGraphDataFromFiles } from "../lib/parser"
 import { parseGitHubUrl, fetchGitHubRepo, MAX_FILES } from "../lib/github"
+
 import type {
     GraphNode, GraphData, GraphViewState,
     GitHubFetchProgress as ProgressType, GitHubFetchError,
@@ -58,32 +60,32 @@ export function AnalysisDetail() {
     useEffect(() => {
         if (!analysis) return
 
+        const currentAnalysis = analysis
+
         setFetchError(null)
 
-        if (analysis.graphData) {
-            setGraphData(analysis.graphData)
+        if (currentAnalysis.graphData) {
+            setGraphData(currentAnalysis.graphData)
             setProgress(null)
             return
         }
 
-        if (analysis.sourceType === "paste") {
+        if (currentAnalysis.sourceType === "paste") {
             setFetchError({ type: 'network_error', message: 'No code data found for this analysis.' })
             return
         }
-
-        const repoInfo = analysis.repoUrl ? parseGitHubUrl(analysis.repoUrl) : null
+        
+        const repoInfo = currentAnalysis.repoUrl ? parseGitHubUrl(currentAnalysis.repoUrl) : null
         if (!repoInfo) {
             setFetchError({ type: 'invalid_url' })
             return
         }
 
-        const fetchId = analysis.id
+        const fetchId = currentAnalysis.id
         activeFetchIdRef.current = fetchId
 
         dispatch({ type: "SET_STATUS", payload: "parsing" })
         setProgress({ phase: 'resolving', filesCompleted: 0, filesTotal: 0 })
-
-        const currentAnalysis = analysis
 
         async function runFetch() {
             try {
@@ -95,7 +97,7 @@ export function AnalysisDetail() {
                     },
                 })
 
-                if (activeFetchIdRef.current !== fetchId) return 
+                if (activeFetchIdRef.current !== fetchId) return
 
                 setProgress({ phase: 'parsing', filesCompleted: result.files.length, filesTotal: result.files.length })
 
@@ -166,6 +168,11 @@ export function AnalysisDetail() {
             selectedNode: null,
             showInfoPanel: false,
         }))
+    }, [])
+
+    const handleGraphErrorReset = useCallback(() => {
+        setGraphData(null)
+        setRetryCount(n => n + 1)
     }, [])
 
     // GUARD CLAUSE — handle not found FIRST
@@ -295,7 +302,7 @@ export function AnalysisDetail() {
                         <GitHubFetchProgress progress={progress} />
                     ) : graphData ? (
                         // GRAPH VIEW
-                        <>
+                        <ErrorBoundary section="the graph visualization" onReset={handleGraphErrorReset}>
                             {/* Stats bar*/}
                             <GraphStatsBar
                                 graphData={graphData}
@@ -325,7 +332,7 @@ export function AnalysisDetail() {
                                 links={graphData.links}
                                 onClose={handleClosePanel}
                             />
-                        </>
+                        </ ErrorBoundary>
                     ) : (
                         // ERROR / NO DATA STATE
                         <div className="flex-1 flex flex-col items-center justify-center gap-4">
