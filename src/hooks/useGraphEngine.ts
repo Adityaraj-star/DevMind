@@ -33,6 +33,8 @@ export function useGraphEngine(graphData: GraphData | null): UseGraphEngineRetur
     const [, setTick] = useState(0)
     const [isSimulating, setIsSimulating] = useState(false)
 
+    const rafScheduledRef = useRef(false)
+
     useEffect(() => {
         if (!graphData || graphData.nodes.length === 0) return
 
@@ -60,7 +62,7 @@ export function useGraphEngine(graphData: GraphData | null): UseGraphEngineRetur
             .alphaDecay(FORCE_CONFIG.alphaDecay)
 
         simulation.on("tick", () => {
-            setTick(n => n + 1)
+            scheduleRender()
         })
 
         simulation.on("end", () => {
@@ -68,6 +70,15 @@ export function useGraphEngine(graphData: GraphData | null): UseGraphEngineRetur
         })
 
         simulationRef.current = simulation
+
+        function scheduleRender() {
+            if (rafScheduledRef.current) return
+            rafScheduledRef.current = true
+            requestAnimationFrame(() => {
+                rafScheduledRef.current = false
+                setTick(n => n + 1)
+            })
+        }
 
         return () => {
             simulation.stop()
