@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useRef, useState } from "react"
+import { useMemo, useCallback, useRef, useState, memo } from "react"
 import { useGraphEngine } from "../../hooks/useGraphEngine"
 import { useZoom } from "../../hooks/useZoom"
 import { cn } from "../../lib/utils"
@@ -11,9 +11,108 @@ const NODE_COLORS: Record<GraphNode['type'], { fill: string; stroke: string; lab
     config:    { fill: '#1d4ed822', stroke: '#1d4ed8', label: '#60a5fa' },  // blue
 }
 
+// // Returns a node radius based on file size while keeping it within a readable range
 function getNodeRadius(linesOfCode: number): number {
     return Math.max(12, Math.min(28, 8 + Math.sqrt(linesOfCode) * 0.8))
 }
+
+interface GraphNodeItemProps {
+    id: string
+    name: string
+    type: GraphNode['type']
+    linesOfCode: number
+    x: number
+    y: number
+    isSelected: boolean
+    isDimmed: boolean
+    isDraggingThis: boolean
+    onMouseDown: (e: React.MouseEvent<SVGGElement>) => void
+    onNodeClick: (e: React.MouseEvent) => void
+}
+
+// Memoized node component to avoid re-rendering unchanged nodes on every D3 tick
+const GraphNodeItem = memo(function GraphNodeItem({
+    id, name, type, linesOfCode, x, y,
+    isSelected, isDimmed, isDraggingThis,
+    onMouseDown, onNodeClick,
+}: GraphNodeItemProps) {
+    const colors = NODE_COLORS[type]
+    const radius = getNodeRadius(linesOfCode)
+
+    return (
+        <g
+            transform={`translate(${x}, ${y})`}
+            onClick={onNodeClick}
+            onMouseDown={onMouseDown}
+            style={{
+                cursor: isDraggingThis ? 'grabbing' : 'pointer',
+                opacity: isDimmed ? 0.25 : 1,
+                transition: 'opacity 0.2s ease',
+            }}
+            role="button"
+            aria-label={`${name} — ${type}, ${linesOfCode} lines`}
+            aria-pressed={isSelected}
+        >
+            {isSelected && (
+                <circle r={radius + 6} fill="none" stroke={colors.stroke} strokeWidth={2} strokeOpacity={0.4} />
+            )}
+            <circle
+                r={radius}
+                fill={colors.fill}
+                stroke={colors.stroke}
+                strokeWidth={isSelected ? 2 : 1.5}
+                strokeOpacity={isSelected ? 1 : 0.6}
+            />
+            <circle r={3} fill={colors.stroke} opacity={0.8} />
+            <text
+                dy={radius + 14}
+                textAnchor="middle"
+                fontSize={10}
+                fill={isSelected ? colors.label : '#71717a'}
+                fontFamily="ui-monospace, monospace"
+                style={{ pointerEvents: 'none', userSelect: 'none' }}
+            >
+                {name.length > 18 ? name.slice(0, 16) + '…' : name}
+            </text>
+        </g>
+    )
+
+}, (prevProps, nextProps) => {
+    return (
+        Math.round(prevProps.x) === Math.round(nextProps.x) &&
+        Math.round(prevProps.y) === Math.round(nextProps.y) &&
+        prevProps.isSelected === nextProps.isSelected &&
+        prevProps.isDimmed === nextProps.isDimmed &&
+        prevProps.isDraggingThis === nextProps.isDraggingThis
+    )
+})
+
+interface GraphLinkItemProps {
+    x1: number
+    y1: number
+    x2: number
+    y2: number
+    isHighlighted: boolean | null 
+}
+
+const GraphLinkItem = memo(function GraphLinkItem({ x1, y1, x2, y2, isHighlighted }: GraphLinkItemProps) {
+    return (
+        <line
+            x1={x1} y1={y1} x2={x2} y2={y2}
+            stroke={isHighlighted ? '#7c3aed' : '#3f3f46'}
+            strokeWidth={isHighlighted ? 1.5 : 1}
+            strokeOpacity={isHighlighted ? 0.8 : 0.4}
+            markerEnd="url(#arrowhead)"
+        />
+    )
+}, (prev, next) => (
+    Math.round(prev.x1) === Math.round(next.x1) &&
+    Math.round(prev.y1) === Math.round(next.y1) &&
+    Math.round(prev.x2) === Math.round(next.x2) &&
+    Math.round(prev.y2) === Math.round(next.y2) &&
+    prev.isHighlighted === next.isHighlighted
+))
+
 
 interface GraphCanvasProps {
     graphData: GraphData
@@ -57,6 +156,18 @@ export function GraphCanvas({
             return visibleNodeIds.has(sourceId) && visibleNodeIds.has(targetId)
         })
     }, [links, visibleNodeIds])
+
+    const connectedNodeIds = useMemo(() => {
+        if (!selectedNode) return new Set<string>()
+        const connected = new Set<string>()
+        for (const link of links) {
+            const sourceId = typeof link.source === 'string' ? link.source : link.source.id
+            const targetId = typeof link.target === 'string' ? link.target : link.target.id
+            if (sourceId === selectedNode.id) connected.add(targetId)
+            if (targetId === selectedNode.id) connected.add(sourceId)
+        }
+        return connected
+    }, [links, selectedNode])
 
     const handleNodeMouseDown = useCallback((
         e: React.MouseEvent<SVGGElement>,
@@ -129,15 +240,14 @@ export function GraphCanvas({
                 role="img"
             >
                 <defs>
-
                     <marker
                         id="arrowhead"
                         viewBox="0 -5 10 10"
-                        refX="20"      // offset from line end (leave space for node circle)
+                        refX="20"
                         refY="0"
                         markerWidth="6"
                         markerHeight="6"
-                        orient="auto"  // rotate to match line direction
+                        orient="auto"
                     >
                         <path d="M0,-5L10,0L0,5" fill="#3f3f46" />
                     </marker>
@@ -162,16 +272,13 @@ export function GraphCanvas({
                             )
 
                             return (
-                                <line
-                                    key={i}
+                                <GraphLinkItem
+                                    key={`${source.id}-${target.id}-${i}`}
                                     x1={source.x}
-                                    y1={source.y}
+                                    y1={source.y ?? 0}
                                     x2={target.x}
-                                    y2={target.y}
-                                    stroke={isHighlighted ? '#7c3aed' : '#3f3f46'}
-                                    strokeWidth={isHighlighted ? 1.5 : 1}
-                                    strokeOpacity={isHighlighted ? 0.8 : 0.4}
-                                    markerEnd="url(#arrowhead)"  // attach the arrowhead marker
+                                    y2={target.y ?? 0}
+                                    isHighlighted={isHighlighted}
                                 />
                             )
                         })}
@@ -182,86 +289,26 @@ export function GraphCanvas({
                             // D3 hasn't placed this node yet so skip
                             if (node.x == null || node.y == null) return null
 
-                            const colors = NODE_COLORS[node.type]
-                            const radius = getNodeRadius(node.linesOfCode)
                             const isSelected = selectedNode?.id === node.id
-                            const isDraggingThis = draggingId === node.id
+                            const isConnected = connectedNodeIds.has(node.id)
+                            const isDimmed = !!selectedNode && !isSelected && !isConnected
 
-                            // determine if this node is connected to the selected node
-                            const isConnected = selectedNode && links.some(link => {
-                                const sourceId = typeof link.source === 'string' ? link.source : link.source.id
-                                const targetId = typeof link.target === 'string' ? link.target : link.target.id
-                                return (
-                                    (sourceId === selectedNode.id && targetId === node.id) ||
-                                    (targetId === selectedNode.id && sourceId === node.id)
-                                )
-                            })
-
-                            // when a node is selected, dim all unconnected, unselected nodes
-                            const isDimmed = selectedNode && !isSelected && !isConnected
 
                             return (
-                                // <g> groups the circle + label together as one unit
-                                // we attach events to the group (so clicking label = same as clicking circle)
-                                <g
+                                <GraphNodeItem
                                     key={node.id}
-                                    transform={`translate(${node.x}, ${node.y})`}
-                                    onClick={(e) => handleNodeClick(e, node)}
+                                    id={node.id}
+                                    name={node.name}
+                                    type={node.type}
+                                    linesOfCode={node.linesOfCode}
+                                    x={node.x}
+                                    y={node.y}
+                                    isSelected={isSelected}
+                                    isDimmed={isDimmed}
+                                    isDraggingThis={draggingId === node.id}
                                     onMouseDown={(e) => handleNodeMouseDown(e, node)}
-                                    style={{
-                                        cursor: isDraggingThis ? 'grabbing' : 'pointer',
-                                        opacity: isDimmed ? 0.25 : 1,
-                                        transition: 'opacity 0.2s ease',
-                                    }}
-                                    role="button"
-                                    aria-label={`${node.name} — ${node.type}, ${node.linesOfCode} lines`}
-                                    aria-pressed={isSelected}
-                                >
-                                    {/* Outer glow ring — only shown when selected */}
-                                    {isSelected && (
-                                        <circle
-                                            r={radius + 6}
-                                            fill="none"
-                                            stroke={colors.stroke}
-                                            strokeWidth={2}
-                                            strokeOpacity={0.4}
-                                        />
-                                    )}
-
-                                    {/* Main node circle */}
-                                    <circle
-                                        r={radius}
-                                        fill={colors.fill}
-                                        stroke={isSelected ? colors.stroke : colors.stroke}
-                                        strokeWidth={isSelected ? 2 : 1.5}
-                                        strokeOpacity={isSelected ? 1 : 0.6}
-                                    />
-
-                                    {/* Node type indicator dot — tiny dot at center */}
-                                    <circle
-                                        r={3}
-                                        fill={colors.stroke}
-                                        opacity={0.8}
-                                    />
-
-                                    {/* File name label */}
-                                    {/* dy="..." positions text relative to node center */}
-                                    {/* dy={radius + 14} puts text just below the circle */}
-                                    <text
-                                        dy={radius + 14}
-                                        textAnchor="middle"     // center the text horizontally
-                                        fontSize={10}
-                                        fill={isSelected ? colors.label : '#71717a'}
-                                        fontFamily="ui-monospace, monospace"
-                                        style={{ pointerEvents: 'none', userSelect: 'none' }}
-                                    >
-                                        {/* Truncate long names to prevent label overflow */}
-                                        {node.name.length > 18
-                                            ? node.name.slice(0, 16) + '…'
-                                            : node.name
-                                        }
-                                    </text>
-                                </g>
+                                    onNodeClick={(e) => handleNodeClick(e, node)}
+                                />
                             )
                         })}
                     </g>
