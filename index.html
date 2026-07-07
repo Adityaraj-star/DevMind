@@ -1,10 +1,44 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>devmind</title>
+
+    <title>DevMind — Visual Code Architecture Explorer</title>
+    <meta name="title" content="DevMind — Visual Code Architecture Explorer" />
+    <meta
+      name="description"
+      content="Paste any JavaScript or TypeScript codebase, or point DevMind at a public GitHub repo. It builds an interactive, force-directed graph of every file and how they connect — no account required."
+    />
+    <meta name="author" content="Aditya Raj" />
+    <meta name="keywords" content="code architecture, dependency graph, codebase visualizer, D3, React, TypeScript, GitHub" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://devmind.vercel.app/" />
+    <meta property="og:title" content="DevMind — Visual Code Architecture Explorer" />
+    <meta
+      property="og:description"
+      content="Paste code or drop a GitHub URL. DevMind maps every file, import, and dependency into an interactive force-directed graph."
+    />
+    <meta property="og:image" content="https://devmind.vercel.app/og-image.png" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://devmind.vercel.app/" />
+    <meta property="twitter:title" content="DevMind — Visual Code Architecture Explorer" />
+    <meta
+      property="twitter:description"
+      content="Paste code or drop a GitHub URL. DevMind maps every file, import, and dependency into an interactive force-directed graph."
+    />
+    <meta property="twitter:image" content="https://devmind.vercel.app/og-image.png" />
+
+    <meta name="theme-color" content="#09090b" />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2309090b'/><circle cx='16' cy='16' r='4' fill='%238b5cf6'/><circle cx='8' cy='10' r='2.5' fill='%230d9488' opacity='0.8'/><circle cx='24' cy='10' r='2.5' fill='%23d97706' opacity='0.8'/><circle cx='8' cy='22' r='2.5' fill='%231d4ed8' opacity='0.8'/><circle cx='24' cy='22' r='2.5' fill='%238b5cf6' opacity='0.6'/><line x1='16' y1='16' x2='8' y2='10' stroke='%23ffffff' stroke-width='1' opacity='0.2'/><line x1='16' y1='16' x2='24' y2='10' stroke='%23ffffff' stroke-width='1' opacity='0.2'/><line x1='16' y1='16' x2='8' y2='22' stroke='%23ffffff' stroke-width='1' opacity='0.2'/><line x1='16' y1='16' x2='24' y2='22' stroke='%23ffffff' stroke-width='1' opacity='0.2'/></svg>"
+    />
+
   </head>
   <body>
     <div id="root"></div>
