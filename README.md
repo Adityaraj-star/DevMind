@@ -32,7 +32,6 @@ Paste code or drop a GitHub URL. DevMind maps every file, import, and dependency
 - [Known Limitations](#known-limitations)
 - [Roadmap / Future Work](#roadmap--future-work)
 - [Contributing](#contributing)
-- [License](#license)
 - [Author](#author)
 
 ---
