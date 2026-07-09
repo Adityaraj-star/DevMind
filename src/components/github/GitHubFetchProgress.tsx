@@ -29,14 +29,14 @@ export function GitHubFetchProgress({ progress }: GitHubFetchProgressProps) {
             </div>
 
             <div className="text-center max-w-sm">
-                <p className="text-sm font-medium text-zinc-300 mb-1.5">
+                <p className="text-sm font-medium text-(--zinc-300) mb-1.5">
                     {PHASE_LABELS[progress.phase]}
                 </p>
 
                 {/* Show detailed progress only while downloading repository files */}
                 {progress.phase === 'files' && progress.filesTotal > 0 && (
                     <>
-                        <div className="w-64 h-1.5 rounded-full bg-zinc-800 overflow-hidden mb-2 mx-auto">
+                        <div className="w-64 h-1.5 rounded-full bg-[var(--zinc-800)] overflow-hidden mb-2 mx-auto">
                             <div
                                 className="h-full bg-violet-500 transition-all duration-200 ease-out"
                                 style={{ width: `${percent}%` }}
@@ -46,12 +46,12 @@ export function GitHubFetchProgress({ progress }: GitHubFetchProgressProps) {
                                 aria-valuemax={100}
                             />
                         </div>
-                        <p className="text-xs text-zinc-600 font-mono">
+                        <p className="text-xs text-[var(--zinc-600)] font-mono">
                             {progress.filesCompleted} / {progress.filesTotal} files
                         </p>
                         {progress.currentFile && (
                             <p className={cn(
-                                "text-[11px] text-zinc-700 font-mono mt-1 truncate max-w-70 mx-auto"
+                                "text-[11px] text-[var(--zinc-700)] font-mono mt-1 truncate max-w-70 mx-auto"
                             )}>
                                 {progress.currentFile}
                             </p>

@@ -12,7 +12,7 @@ export function PageShell({ children, className }: PageShellProps) {
     const { state } = useAppContext()   // to know current Sidebar state
 
     return (
-        <div className="min-h-screen bg-zinc-950 text-zinc-100">
+        <div className="min-h-screen bg-(--zinc-950) text-[var(--zinc-100)]">
             <Navbar />
             <Sidebar />
 

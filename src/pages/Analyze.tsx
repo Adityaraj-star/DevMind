@@ -100,10 +100,10 @@ export function Analyze() {
                     <p className="font-mono text-xs text-violet-400 tracking-widest uppercase mb-4">
                         Start here
                     </p>
-                    <h1 className="text-3xl md:text-4xl font-bold text-zinc-100 mb-4">
+                    <h1 className="text-3xl md:text-4xl font-bold text-[var(--zinc-100)] mb-4">
                         Analyze your codebase
                     </h1>
-                    <p className="text-zinc-400 text-base leading-relaxed">
+                    <p className="text-[var(--zinc-400)] text-base leading-relaxed">
                         Paste code directly or enter a GitHub URL. DevMind builds
                         an interactive graph of every file and its connections.
                     </p>
@@ -111,7 +111,7 @@ export function Analyze() {
 
                  {/* Tab switcher */}
                 <div className="max-w-3xl mx-auto mb-6">
-                    <div className="flex gap-1 p-1 bg-zinc-900 rounded-xl border border-zinc-800 w-fit mx-auto">
+                    <div className="flex gap-1 p-1 bg-[var(--zinc-900)] rounded-xl border border-[var(--zinc-800)] w-fit mx-auto">
                         {(["paste", "github"] as InputTab[]).map((tab) => (
                             <button
                                 key={tab}
@@ -120,8 +120,8 @@ export function Analyze() {
                                 className={cn(
                                     "px-5 py-2 text-sm font-medium rounded-lg transition-all duration-150",
                                     activeTab === tab
-                                        ? "bg-zinc-800 text-zinc-100 shadow-sm"
-                                        : "text-zinc-500 hover:text-zinc-300"
+                                        ? "bg-[var(--zinc-800)] text-[var(--zinc-100)] shadow-sm"
+                                        : "text-(--zinc-500) hover:text-(--zinc-300)"
                                 )}
                             >
                                 {tab === "paste" ? "📋  Paste code" : "⬡  GitHub URL"}
@@ -150,8 +150,8 @@ export function Analyze() {
                                     <circle cx="12" cy="12" r="10" />
                                     <path d="M12 16v-4M12 8h.01" />
                                 </svg>
-                                <p className="text-[11px] text-zinc-500 leading-relaxed">
-                                    <strong className="text-zinc-400">Tip:</strong> paste multiple files
+                                <p className="text-[11px] text-(--zinc-500) leading-relaxed">
+                                    <strong className="text-[var(--zinc-400)]">Tip:</strong> paste multiple files
                                     by separating them with{" "}
                                     <code className="text-violet-400 font-mono">{"// --- file: Button.tsx ---"}</code>{" "}
                                     on its own line before each file's code — DevMind will graph
@@ -176,14 +176,14 @@ export function Analyze() {
                             >
                                 <div className={cn(
                                     "rounded-2xl p-8",
-                                    "border border-zinc-800 bg-zinc-900/40",
+                                    "border border-[var(--zinc-800)] bg-[var(--zinc-900)]/40",
                                     "space-y-5"
                                 )}>
                                     <div>
-                                        <h2 className="text-base font-medium text-zinc-200 mb-1">
+                                        <h2 className="text-base font-medium text-(--zinc-200) mb-1">
                                             GitHub repository
                                         </h2>
-                                        <p className="text-sm text-zinc-500">
+                                        <p className="text-sm text-(--zinc-500)">
                                             Paste a public GitHub URL. DevMind fetches the real
                                             file structure and builds the graph from it.
                                         </p>
@@ -216,7 +216,7 @@ export function Analyze() {
                                             <span className="text-violet-300 text-sm font-medium">
                                                 {repoPreview}
                                             </span>
-                                            <span className="text-zinc-500 text-xs">will be used as the analysis title</span>
+                                            <span className="text-(--zinc-500) text-xs">will be used as the analysis title</span>
                                         </div>
                                     )}
 

@@ -29,8 +29,8 @@ export function GitHubFetchErrorView({
                     <path d="M12 8v4M12 16h.01" />
                 </svg>
             </div>
-            <h2 className="text-base font-semibold text-zinc-200">{title}</h2>
-            <p className="text-sm text-zinc-500 max-w-sm leading-relaxed">{message}</p>
+            <h2 className="text-base font-semibold text-(--zinc-200)">{title}</h2>
+            <p className="text-sm text-(--zinc-500) max-w-sm leading-relaxed">{message}</p>
             <div className="flex items-center gap-3 mt-2">
                 {action}
                 <Button variant="secondary" size="sm" onClick={onRetry}>

@@ -184,20 +184,20 @@ export function AnalysisDetail() {
                 <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
                     <div className={cn(
                         "w-16 h-16 rounded-2xl mb-6",
-                        "bg-zinc-900 border border-zinc-800",
+                        "bg-[var(--zinc-900)] border border-[var(--zinc-800)]",
                         "flex items-center justify-center"
                     )}>
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" strokeWidth="1.5"
-                            className="text-zinc-600" aria-hidden="true">
+                            className="text-[var(--zinc-600)]" aria-hidden="true">
                             <circle cx="12" cy="12" r="10" />
                             <path d="M12 8v4M12 16h.01" />
                         </svg>
                     </div>
-                    <h1 className="text-xl font-semibold text-zinc-200 mb-2">
+                    <h1 className="text-xl font-semibold text-(--zinc-200) mb-2">
                         Analysis not found
                     </h1>
-                    <p className="text-zinc-500 text-sm mb-8 max-w-md leading-relaxed">
+                    <p className="text-(--zinc-500) text-sm mb-8 max-w-md leading-relaxed">
                         This analysis doesn't exist or was deleted.
                         It may have been removed from your local history.
                     </p>
@@ -222,15 +222,15 @@ export function AnalysisDetail() {
                 {/* PAGE HEADER */}
                 <div className={cn(
                     "flex items-center justify-between gap-4 flex-wrap",
-                    "px-6 py-3 border-b border-zinc-800/60 bg-zinc-950",
+                    "px-6 py-3 border-b border-(--zinc-800)/60 bg-(--zinc-950)",
                     "shrink-0"    // prevent header from shrinking when graph needs space
                 )}>
                     {/* Left: breadcrumb + title + badges */}
                     <div className="flex items-center gap-3 flex-wrap min-w-0">
                         <button
                             onClick={() => navigate(-1)}
-                            className="p-1.5 rounded-md text-zinc-500 hover:text-zinc-300
-                                hover:bg-zinc-800 transition-colors shrink-0"
+                            className="p-1.5 rounded-md text-(--zinc-500) hover:text-(--zinc-300)
+                                hover:bg-(--zinc-800) transition-colors shrink-0"
                             aria-label="Go back"
                         >
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -238,7 +238,7 @@ export function AnalysisDetail() {
                                 <path d="M19 12H5M12 5l-7 7 7 7" />
                             </svg>
                         </button>
-                        <h1 className="text-sm font-semibold text-zinc-100 truncate">
+                        <h1 className="text-sm font-semibold text-[var(--zinc-100)] truncate">
                             {analysis.title}
                         </h1>
                         <Badge variant={analysis.language === "typescript" ? "config" : "util"}>
@@ -247,11 +247,11 @@ export function AnalysisDetail() {
                         <Badge variant={analysis.sourceType === "github" ? "component" : "hook"}>
                             {analysis.sourceType === "github" ? "GitHub" : "Pasted"}
                         </Badge>
-                        <span className="text-xs text-zinc-600 font-mono">
+                        <span className="text-xs text-[var(--zinc-600)] font-mono">
                             {formatRelativeTime(analysis.createdAt)}
                         </span>
                         {analysis.fileCount != null && (
-                            <span className="text-xs text-zinc-600 font-mono">
+                            <span className="text-xs text-[var(--zinc-600)] font-mono">
                                 {analysis.fileCount} files
                             </span>
                         )}
@@ -336,7 +336,7 @@ export function AnalysisDetail() {
                     ) : (
                         // ERROR / NO DATA STATE
                         <div className="flex-1 flex flex-col items-center justify-center gap-4">
-                            <p className="text-sm text-zinc-500">
+                            <p className="text-sm text-(--zinc-500)">
                                 Could not generate graph data.
                             </p>
                             <Button variant="secondary" size="sm"

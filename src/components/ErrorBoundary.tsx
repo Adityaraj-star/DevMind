@@ -58,19 +58,19 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                             <path d="M12 9v4M12 17h.01" />
                         </svg>
                     </div>
-                    <h2 className="text-base font-semibold text-zinc-200">
+                    <h2 className="text-base font-semibold text-(--zinc-200)">
                         {this.props.section
                             ? `Something went wrong in ${this.props.section}`
                             : "Something went wrong"}
                     </h2>
-                    <p className="text-sm text-zinc-500 max-w-sm leading-relaxed">
+                    <p className="text-sm text-(--zinc-500) max-w-sm leading-relaxed">
                         This is likely caused by unexpected data — DevMind hit
                         a case it didn't know how to render. Your other analyses
                         and saved data are unaffected.
                     </p>
                     
                     {this.state.error && (
-                        <p className="text-xs text-zinc-700 font-mono max-w-md truncate">
+                        <p className="text-xs text-[var(--zinc-700)] font-mono max-w-md truncate">
                             {this.state.error.message}
                         </p>
                     )}

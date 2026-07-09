@@ -23,17 +23,17 @@ const variantStyles: Record<ButtonVariant, string> = {
     ].join(" "),
 
     secondary: [
-        "bg-transparent text-zinc-300",
-        "border border-zinc-700",
-        "hover:bg-zinc-800 hover:border-zinc-600",
-        "active:bg-zinc-700",
+        "bg-transparent text-(--zinc-300)",
+        "border border-[var(--zinc-700)]",
+        "hover:bg-(--zinc-800) hover:border-[var(--zinc-600)]",
+        "active:bg-[var(--zinc-700)]",
     ].join(" "),
 
     ghost: [
-        "bg-transparent text-zinc-400",
+        "bg-transparent text-[var(--zinc-400)]",
         "border border-transparent",
-        "hover:bg-zinc-800/60 hover:text-zinc-200",
-        "active:bg-zinc-800",
+        "hover:bg-(--zinc-800)/60 hover:text-(--zinc-200)",
+        "active:bg-[var(--zinc-800)]",
     ].join(" "),
 
     danger: [

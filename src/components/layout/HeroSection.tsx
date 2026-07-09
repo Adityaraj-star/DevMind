@@ -69,17 +69,17 @@ export function HeroSection({
                 </div>
 
                 <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
-                    <span className="text-zinc-100">Visualize </span>
+                    <span className="text-[var(--zinc-100)]">Visualize </span>
                     <span 
                         className="bg-linear-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent"
                     >
                         any codebase
                     </span>
                     <br />
-                    <span className="text-zinc-100">in seconds</span>
+                    <span className="text-[var(--zinc-100)]">in seconds</span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mb-10 leading-relaxed">
+                <p className="text-lg md:text-xl text-[var(--zinc-400)] max-w-2xl mb-10 leading-relaxed">
                     Paste code or drop a GitHub URL. DevMind maps every file,
                     import, and dependency into an interactive graph - then uses
                     AI to explain, analyze, and suggest improvements.
@@ -116,8 +116,8 @@ export function HeroSection({
                             className={cn(
                                 "flex items-center gap-2",
                                 "px-3 py-1.5 rounded-lg",
-                                "bg-zinc-900/60 border border-zinc-800",
-                                "text-zinc-400 text-sm"
+                                "bg-[var(--zinc-900)]/60 border border-[var(--zinc-800)]",
+                                "text-[var(--zinc-400)] text-sm"
                             )}
                         >
                             <span className="text-violet-400 text-base"
@@ -139,7 +139,7 @@ export function HeroSection({
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1.5"
-                        className="text-zinc-600"
+                        className="text-[var(--zinc-600)]"
                     >
                         <path d="M6 9l6 6 6-6" />
                     </svg>

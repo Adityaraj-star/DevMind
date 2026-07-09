@@ -84,11 +84,11 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                     </p>
                     <h2
                         id="analyze-heading"
-                        className="text-3xl md:text-4xl font-bold text-zinc-100 mb-4"
+                        className="text-3xl md:text-4xl font-bold text-[var(--zinc-100)] mb-4"
                     >
                         Paste your code
                     </h2>
-                    <p className="text-zinc-400 text-base max-w-xl mx-auto">
+                    <p className="text-[var(--zinc-400)] text-base max-w-xl mx-auto">
                         Drop a file, paste a snippet, or type directly below.
                         DevMind handles the rest.
                     </p>
@@ -97,16 +97,16 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                 <div className={cn(
                     "rounded-2xl overflow-hidden",
                     "border",
-                    isDragging ? "border-violet-500/60" : "border-zinc-800",
+                    isDragging ? "border-violet-500/60" : "border-[var(--zinc-800)]",
                     "transition-colors duration-200",
-                    "bg-zinc-900/40"
+                    "bg-[var(--zinc-900)]/40"
                 )}>
 
                     <div className={cn(
                         "flex items-center justify-between",
                         "px-4 py-3",
-                        "bg-zinc-900/80",
-                        "border-b border-zinc-800"
+                        "bg-[var(--zinc-900)]/80",
+                        "border-b border-[var(--zinc-800)]"
                     )}>
 
                         <div className="flex items-center gap-3">
@@ -115,7 +115,7 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                                 <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                                 <div className="w-3 h-3 rounded-full bg-green-500/60" />
                             </div>
-                            <span className="font-mono text-xs text-zinc-500">
+                            <span className="font-mono text-xs text-(--zinc-500)">
                                 code-input.{language === "typescript" ? "tsx" : "jsx"}
                             </span>
                         </div>
@@ -130,8 +130,8 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                                 value={language}
                                 onChange={(e) => setLanguage(e.target.value as "javascript" | "typescript")}
                                 className={cn(
-                                "bg-zinc-800 text-zinc-300 text-xs",
-                                "border border-zinc-700 rounded-md",
+                                "bg-[var(--zinc-800)] text-(--zinc-300) text-xs",
+                                "border border-[var(--zinc-700)] rounded-md",
                                 "px-2 py-1",
                                 "focus:outline-none focus:border-violet-500/50",
                                 "cursor-pointer"
@@ -159,7 +159,7 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                                 className={cn(
                                 "absolute inset-0 z-10",
                                 "flex flex-col items-center justify-center gap-3",
-                                "bg-zinc-950/90",
+                                "bg-(--zinc-950)/90",
                                 "border-2 border-dashed border-violet-500/60 rounded-b-2xl"
                                 )}
                                 aria-live="polite"
@@ -172,7 +172,7 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                                     <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" />
                                 </svg>
                                 <p className="text-violet-300 font-medium">Drop to analyze</p>
-                                <p className="text-zinc-500 text-sm">Supports .js, .ts, .jsx, .tsx</p>
+                                <p className="text-(--zinc-500) text-sm">Supports .js, .ts, .jsx, .tsx</p>
                             </div>
                         )}
 
@@ -198,9 +198,9 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                                     "w-full min-h-80 resize-y",
                                     "bg-transparent",
                                     "font-mono text-sm leading-relaxed",
-                                    "text-zinc-300",
+                                    "text-(--zinc-300)",
                                     "px-5 py-4",
-                                    "placeholder:text-zinc-600",
+                                    "placeholder:text-[var(--zinc-600)]",
                                     "focus:outline-none",
                                     "tab-size-2",
                                 )}
@@ -213,8 +213,8 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                         <div className={cn(
                             "flex items-center justify-between",
                             "px-4 py-3",
-                            "bg-zinc-900/80",
-                            "border-t border-zinc-800",
+                            "bg-[var(--zinc-900)]/80",
+                            "border-t border-[var(--zinc-800)]",
                             "gap-4"
                         )}>
                 
@@ -225,7 +225,7 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                                     isTooLong  ? "text-red-400"    :
                                     isTooShort ? "text-amber-400"  :
                                     charCount > 0 ? "text-green-400" :
-                                    "text-zinc-600"
+                                    "text-[var(--zinc-600)]"
                                     )}
                                     aria-live="polite"
                                     aria-label={`${charCount} characters`}
@@ -235,7 +235,7 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
 
                         
                                 {lineCount > 0 && (
-                                    <span className="font-mono text-xs text-zinc-600">
+                                    <span className="font-mono text-xs text-[var(--zinc-600)]">
                                     {lineCount} lines
                                     </span>
                                 )}
@@ -254,7 +254,7 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                                 )}
 
                                 {canAnalyze && (
-                                    <span className="text-xs text-zinc-600 hidden sm:block" id="code-input-help">
+                                    <span className="text-xs text-[var(--zinc-600)] hidden sm:block" id="code-input-help">
                                     ⌘ Enter to analyze
                                     </span>
                                 )}
@@ -294,7 +294,7 @@ export function CodePastePanel({ onAnalyze, status, className }: CodePastePanelP
                         </div>
                     </div>
 
-                    <p className="text-center text-zinc-600 text-xs mt-4">
+                    <p className="text-center text-[var(--zinc-600)] text-xs mt-4">
                     DevMind processes code locally in your browser. Nothing is stored without your permission.
                     </p>
                 </div>

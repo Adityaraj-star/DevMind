@@ -50,9 +50,9 @@ export function Navbar() {
             className={cn(
                 "fixed top-0 left-0 right-0 z-50 h-14",
                 "flex items-center justify-between",
-                "bg-zinc-950/90",
+                "bg-(--zinc-950)/90",
                 "backdrop-blur-md",
-                "border-b border-zinc-800/60",
+                "border-b border-(--zinc-800)/60",
             )}
         >
             <div className="flex items-center gap-2">
@@ -80,7 +80,7 @@ export function Navbar() {
                 <Link to="/" className="flex items-center group" aria-label="DevMind home">
                     <span className={cn(
                         "font-mono font-bold text-lg tracking-tight",
-                        "text-zinc-100 group-hover:text-white transition-colors duration-200"
+                        "text-[var(--zinc-100)] group-hover:text-white transition-colors duration-200"
                     )}>
                         Dev
                     </span>
@@ -90,7 +90,7 @@ export function Navbar() {
                     )}>
                         Mind
                     </span>
-                    <span className="ml-2 text-[10px] font-mono text-zinc-600 pt-1">
+                    <span className="ml-2 text-[10px] font-mono text-[var(--zinc-600)] pt-1">
                         v0.1
                     </span>
                 </Link>
@@ -111,9 +111,9 @@ export function Navbar() {
                                 "transition-colors duration-150 font-medium tracking-wide",
                                 isActive
 
-                                    ? "text-zinc-100 bg-zinc-800"
+                                    ? "text-[var(--zinc-100)] bg-[var(--zinc-800)]"
                                 
-                                    : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60"
+                                    : "text-[var(--zinc-400)] hover:text-[var(--zinc-100)] hover:bg-(--zinc-800)/60"
                             )}
                         >
                             {item.label}
@@ -126,7 +126,7 @@ export function Navbar() {
             <div className="flex items-center gap-2">
 
                 {state.analyses.length > 0 && (
-                    <span className="hidden md:flex items-center gap-1.5 text-xs text-zinc-500 font-mono">
+                    <span className="hidden md:flex items-center gap-1.5 text-xs text-(--zinc-500) font-mono">
                         <span className="w-1.5 h-1.5 rounded-full bg-violet-500/60" aria-hidden="true" />
                         {state.analyses.length} {state.analyses.length === 1 ? "analysis" : "analyses"}
                     </span>

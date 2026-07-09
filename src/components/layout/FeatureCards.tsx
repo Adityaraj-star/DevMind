@@ -69,8 +69,8 @@ function FeatureCard({ card }: { card: CardData }) {
                 "group relative",
                 "flex flex-col",
                 "rounded-xl p-6",
-                "bg-zinc-900/50",
-                "border border-zinc-800/80",
+                "bg-[var(--zinc-900)]/50",
+                "border border-[var(--zinc-800)]/80",
                 "transition-all duration-300 ease-out",
                 card.borderHover,
                 card.glowColor,
@@ -92,15 +92,15 @@ function FeatureCard({ card }: { card: CardData }) {
                 aria-hidden="true"
             />
 
-            <span className="font-mono text-xs text-zinc-600 mb-4 tracking-widest">
+            <span className="font-mono text-xs text-[var(--zinc-600)] mb-4 tracking-widest">
                 {card.number}
             </span>
 
             <div className={cn(
                 "w-10 h-10 mb-5 flex items-center justify-center",
-                "rounded-lg bg-zinc-800/60 border border-zinc-700/50",
+                "rounded-lg bg-[var(--zinc-800)]/60 border border-[var(--zinc-700)]/50",
                 "transition-colors duration-300",
-                "group-hover:border-zinc-600/80"
+                "group-hover:border-[var(--zinc-600)]/80"
             )}>
                 <svg
                     width="20" height="20"
@@ -117,14 +117,14 @@ function FeatureCard({ card }: { card: CardData }) {
                 </svg>
             </div>
 
-            <h3 className="text-xl font-semibold text-zinc-100 mb-1">
+            <h3 className="text-xl font-semibold text-[var(--zinc-100)] mb-1">
                 {card.title}
             </h3>
-            <p className="text-xs font-mono text-zinc-500 mb-4 tracking-wide">
+            <p className="text-xs font-mono text-(--zinc-500) mb-4 tracking-wide">
                 {card.tagline}
             </p>
 
-            <p className="text-sm text-zinc-400 leading-relaxed mb-6">
+            <p className="text-sm text-[var(--zinc-400)] leading-relaxed mb-6">
                 {card.description}
             </p>
 
@@ -132,7 +132,7 @@ function FeatureCard({ card }: { card: CardData }) {
                 {card.features.map((feature) => (
                 <li
                     key={feature}
-                    className="flex items-center gap-2.5 text-xs text-zinc-500"
+                    className="flex items-center gap-2.5 text-xs text-(--zinc-500)"
                 >
                     <svg
                         width="14" height="14"
@@ -172,11 +172,11 @@ export function FeatureCards({ className }: FeatureCardsProps) {
                     </p>
                     <h2
                         id="features-heading"
-                        className="text-3xl md:text-4xl font-bold text-zinc-100 mb-4"
+                        className="text-3xl md:text-4xl font-bold text-[var(--zinc-100)] mb-4"
                     >
                         Three tools. One workflow.
                     </h2>
-                    <p className="text-zinc-400 max-w-xl mx-auto text-base leading-relaxed">
+                    <p className="text-[var(--zinc-400)] max-w-xl mx-auto text-base leading-relaxed">
                         DevMind gives you everything you need to understand,
                         navigate, and improve any codebase - no setup required.
                     </p>
@@ -189,7 +189,7 @@ export function FeatureCards({ className }: FeatureCardsProps) {
                 </div>
 
                 <div className="mt-16 text-center">
-                    <p className="text-zinc-500 text-sm">
+                    <p className="text-(--zinc-500) text-sm">
                     No account required. Works with any JavaScript or TypeScript project.
                     </p>
                 </div>

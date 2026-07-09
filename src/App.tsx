@@ -11,7 +11,7 @@ const NotFound = lazy(() => import("./pages/NotFound").then(m => ({ default: m.N
 
 function RouteLoadingFallback() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-zinc-950">
+        <div className="min-h-screen flex items-center justify-center bg-(--zinc-950)">
             <div className="relative w-8 h-8">
                 <div className="absolute inset-0 rounded-full border-2 border-violet-500/20" />
                 <div className="absolute inset-0 rounded-full border-2 border-t-violet-400 border-transparent animate-spin" />

@@ -4,7 +4,7 @@ import type { GraphData, GraphNode } from "../../types"
 type FilterType = 'all' | GraphNode['type']
 
 const FILTER_DOTS: Record<FilterType, string> = {
-    all:       'bg-zinc-400',
+    all:       'bg-[var(--zinc-400)]',
     component: 'bg-violet-400',
     hook:      'bg-teal-400',
     util:      'bg-amber-400',
@@ -39,24 +39,24 @@ export function GraphStatsBar({
     return (
         <div className={cn(
             "flex items-center justify-between gap-4 flex-wrap",
-            "px-4 py-2.5 border-b border-zinc-800/60 bg-zinc-950/80",
+            "px-4 py-2.5 border-b border-(--zinc-800)/60 bg-(--zinc-950)/80",
             "backdrop-blur-sm"
         )}>
 
             <div className="flex items-center gap-3 flex-wrap">
                 <StatPill label="Files" value={stats.totalFiles} />
-                <span className="text-zinc-800" aria-hidden="true">·</span>
+                <span className="text-[var(--zinc-800)]" aria-hidden="true">·</span>
 
                 <StatPill label="Lines" value={stats.totalLines.toLocaleString()} />
-                <span className="text-zinc-800" aria-hidden="true">·</span>
+                <span className="text-[var(--zinc-800)]" aria-hidden="true">·</span>
 
                 <StatPill label="Avg lines/file" value={stats.avgLinesPerFile} />
 
                 {stats.mostConnected && stats.mostConnected !== 'none' && (
                     <>
-                        <span className="text-zinc-800" aria-hidden="true">·</span>
+                        <span className="text-[var(--zinc-800)]" aria-hidden="true">·</span>
                         <div className="flex items-center gap-1.5">
-                            <span className="text-[11px] text-zinc-600">Most imported:</span>
+                            <span className="text-[11px] text-[var(--zinc-600)]">Most imported:</span>
                             <span className="text-[11px] font-mono text-amber-400">
                                 {stats.mostConnected}
                             </span>
@@ -76,8 +76,8 @@ export function GraphStatsBar({
                             "flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px]",
                             "font-medium transition-colors duration-100",
                             activeFilter === opt.key
-                                ? "bg-zinc-800 text-zinc-100"
-                                : "text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900"
+                                ? "bg-[var(--zinc-800)] text-[var(--zinc-100)]"
+                                : "text-(--zinc-500) hover:text-(--zinc-300) hover:bg-[var(--zinc-900)]"
                         )}
                     >
                         {/* Colored dot indicator */}
@@ -89,7 +89,7 @@ export function GraphStatsBar({
                         {/* Count badge */}
                         <span className={cn(
                             "ml-0.5",
-                            activeFilter === opt.key ? "text-zinc-400" : "text-zinc-600"
+                            activeFilter === opt.key ? "text-[var(--zinc-400)]" : "text-[var(--zinc-600)]"
                         )}>
                             {opt.count}
                         </span>
@@ -108,8 +108,8 @@ interface StatPillProps {
 function StatPill({ label, value }: StatPillProps) {
     return (
         <div className="flex items-center gap-1.5">
-            <span className="text-[11px] text-zinc-600">{label}</span>
-            <span className="text-[11px] font-mono font-medium text-zinc-300">{value}</span>
+            <span className="text-[11px] text-[var(--zinc-600)]">{label}</span>
+            <span className="text-[11px] font-mono font-medium text-(--zinc-300)">{value}</span>
         </div>
     )
 }

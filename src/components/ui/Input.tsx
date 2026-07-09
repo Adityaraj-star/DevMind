@@ -18,7 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 {label && (
                     <label
                         htmlFor={inputId}
-                        className="text-xs font-medium text-zinc-400 tracking-wide"
+                        className="text-xs font-medium text-[var(--zinc-400)] tracking-wide"
                     >
                         {label}
                     </label>
@@ -28,7 +28,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
                     {leftIcon && (
                         <div
-                            className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-(--zinc-500)"
                             aria-hidden="true"
                         >
                             {leftIcon}
@@ -40,14 +40,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         id={inputId}
                         className={cn(
                             "w-full h-9 rounded-lg text-sm",
-                            "bg-zinc-900 border",
-                            "text-zinc-200 placeholder:text-zinc-600",
+                            "bg-[var(--zinc-900)] border",
+                            "text-(--zinc-200) placeholder:text-[var(--zinc-600)]",
                             "transition-colors duration-150",
                             "focus:outline-none focus:ring-2 focus:ring-violet-500/30",
                             leftIcon ? "pl-9 pr-3" : "px-3",
                             error
                                 ? "border-red-500/50 focus:border-red-500/50"
-                                : "border-zinc-700 focus:border-violet-500/50",
+                                : "border-[var(--zinc-700)] focus:border-violet-500/50",
                             className
                         )}
                         {...props}
@@ -61,7 +61,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 )}
 
                 {hint && !error && (
-                    <p className="text-xs text-zinc-600">{hint}</p>
+                    <p className="text-xs text-[var(--zinc-600)]">{hint}</p>
                 )}
             </div>
         )

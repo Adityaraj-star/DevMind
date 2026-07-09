@@ -1,5 +1,42 @@
 @import "tailwindcss";
 
+/* ============================================================
+   THEME TOKENS
+   Every component references the zinc scale through these
+   variables instead of hardcoded classes. Dark mode uses the
+   scale as-is. Light mode flips it end to end (950 <-> 50,
+   900 <-> 100, ...), so bg-[var(--zinc-950)] is the darkest
+   surface in dark mode and the lightest surface in light mode,
+   with no per-component light/dark branching needed.
+   ============================================================ */
+:root {
+    --zinc-50: #fafafa;
+    --zinc-100: #f4f4f5;
+    --zinc-200: #e4e4e7;
+    --zinc-300: #d4d4d8;
+    --zinc-400: #a1a1aa;
+    --zinc-500: #71717a;
+    --zinc-600: #52525b;
+    --zinc-700: #3f3f46;
+    --zinc-800: #27272a;
+    --zinc-900: #18181b;
+    --zinc-950: #09090b;
+}
+
+:root:not(.dark) {
+    --zinc-50: #09090b;
+    --zinc-100: #18181b;
+    --zinc-200: #27272a;
+    --zinc-300: #3f3f46;
+    --zinc-400: #52525b;
+    --zinc-500: #71717a;
+    --zinc-600: #a1a1aa;
+    --zinc-700: #d4d4d8;
+    --zinc-800: #e4e4e7;
+    --zinc-900: #f4f4f5;
+    --zinc-950: #fafafa;
+}
+
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -8,13 +45,12 @@
     background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    background: #3f3f46;
+    background: var(--zinc-700);
     border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: #52525b;
+    background: var(--zinc-600);
 }
-
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -29,6 +65,8 @@ body {
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: var(--zinc-950);
+    transition: background-color 0.2s ease;
 }
 
 textarea {

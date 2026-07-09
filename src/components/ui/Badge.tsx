@@ -14,7 +14,7 @@ const badgeVariants: Record<BadgeVariant, string> = {
     hook:      "bg-teal-500/15 text-teal-300 border-teal-500/25 ring-teal-500/10",
     util:      "bg-amber-500/15 text-amber-300 border-amber-500/25 ring-amber-500/10",
     config:    "bg-blue-500/15 text-blue-300 border-blue-500/25 ring-blue-500/10",
-    default:   "bg-zinc-700/50 text-zinc-400 border-zinc-600/50 ring-zinc-500/10",
+    default:   "bg-[var(--zinc-700)]/50 text-[var(--zinc-400)] border-[var(--zinc-600)]/50 ring-[var(--zinc-500)]/10",
     success:   "bg-green-500/15 text-green-300 border-green-500/25 ring-green-500/10",
     warning:   "bg-orange-500/15 text-orange-300 border-orange-500/25 ring-orange-500/10",
     error:     "bg-red-500/15 text-red-300 border-red-500/25 ring-red-500/10",

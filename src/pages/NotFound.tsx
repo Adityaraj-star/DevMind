@@ -10,17 +10,17 @@ export function NotFound() {
             <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
 
                 <p
-                    className="font-mono text-[120px] font-bold text-zinc-800 leading-none mb-6 select-none"
+                    className="font-mono text-[120px] font-bold text-[var(--zinc-800)] leading-none mb-6 select-none"
                     aria-hidden="true"
                 >
                     404
                 </p>
 
-                <h1 className="text-2xl font-semibold text-zinc-200 mb-3">
+                <h1 className="text-2xl font-semibold text-(--zinc-200) mb-3">
                     Page not found
                 </h1>
 
-                <p className="text-zinc-500 text-sm max-w-md mb-8 leading-relaxed">
+                <p className="text-(--zinc-500) text-sm max-w-md mb-8 leading-relaxed">
                     The page you're looking for doesn't exist. It may have been
                     moved, deleted, or you may have typed the URL incorrectly.
                 </p>

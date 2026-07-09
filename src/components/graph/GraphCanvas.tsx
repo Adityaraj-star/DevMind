@@ -224,7 +224,7 @@ export function GraphCanvas({
             {isSimulating && (
                 <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10
                     flex items-center gap-2 px-3 py-1.5 rounded-full
-                    bg-zinc-900/90 border border-zinc-700 text-xs text-zinc-400"
+                    bg-[var(--zinc-900)]/90 border border-[var(--zinc-700)] text-xs text-[var(--zinc-400)]"
                     aria-live="polite"
                 >
                     <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
@@ -318,8 +318,8 @@ export function GraphCanvas({
             <div className="absolute bottom-6 right-6 flex flex-col gap-1.5">
                 <button
                     onClick={zoomIn}
-                    className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700
-                        text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800
+                    className="w-8 h-8 rounded-lg bg-[var(--zinc-900)] border border-[var(--zinc-700)]
+                        text-(--zinc-300) hover:text-[var(--zinc-100)] hover:bg-(--zinc-800)
                         flex items-center justify-center transition-colors text-lg font-light"
                     aria-label="Zoom in"
                 >
@@ -327,8 +327,8 @@ export function GraphCanvas({
                 </button>
                 <button
                     onClick={zoomOut}
-                    className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700
-                        text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800
+                    className="w-8 h-8 rounded-lg bg-[var(--zinc-900)] border border-[var(--zinc-700)]
+                        text-(--zinc-300) hover:text-[var(--zinc-100)] hover:bg-(--zinc-800)
                         flex items-center justify-center transition-colors text-lg font-light"
                     aria-label="Zoom out"
                 >
@@ -336,8 +336,8 @@ export function GraphCanvas({
                 </button>
                 <button
                     onClick={resetZoom}
-                    className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700
-                        text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800
+                    className="w-8 h-8 rounded-lg bg-[var(--zinc-900)] border border-[var(--zinc-700)]
+                        text-(--zinc-300) hover:text-[var(--zinc-100)] hover:bg-(--zinc-800)
                         flex items-center justify-center transition-colors"
                     aria-label="Reset zoom"
                     title="Reset zoom"
