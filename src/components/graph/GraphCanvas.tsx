@@ -2,7 +2,7 @@ import { useMemo, useCallback, useRef, useState, memo } from "react"
 import { useGraphEngine } from "../../hooks/useGraphEngine"
 import { useZoom } from "../../hooks/useZoom"
 import { cn } from "../../lib/utils"
-import type { GraphData, GraphNode, SelectedNode, GraphLink } from "../../types"
+import type { GraphData, GraphNode, SelectedNode } from "../../types"
 
 const NODE_COLORS: Record<GraphNode['type'], { fill: string; stroke: string; label: string }> = {
     component: { fill: '#7c3aed22', stroke: '#7c3aed', label: '#a78bfa' },  // violet
@@ -32,7 +32,7 @@ interface GraphNodeItemProps {
 
 // Memoized node component to avoid re-rendering unchanged nodes on every D3 tick
 const GraphNodeItem = memo(function GraphNodeItem({
-    id, name, type, linesOfCode, x, y,
+    name, type, linesOfCode, x, y,
     isSelected, isDimmed, isDraggingThis,
     onMouseDown, onNodeClick,
 }: GraphNodeItemProps) {

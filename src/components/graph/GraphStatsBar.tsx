@@ -23,7 +23,6 @@ export function GraphStatsBar({
     graphData,
     activeFilter,
     onFilterChange,
-    isSimulating,
 }: GraphStatsBarProps) {
     const { stats } = graphData
 

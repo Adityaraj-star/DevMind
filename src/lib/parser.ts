@@ -181,7 +181,7 @@ export function buildGraphData(nodes: GraphNode[]): GraphData {
 
 function resolveImportPath(
     importPath: string,
-    fromPath: string,
+    _fromPath: string,
     allPaths: string[]
 ): string | null {
     const cleanImport = importPath.replace(/^[./]+/, '')

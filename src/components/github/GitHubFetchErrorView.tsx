@@ -98,7 +98,7 @@ function getErrorContent(
             }
 
         default: {
-            const _exhaustive: never = error
+            error satisfies never
             return {
                 title: "Something went wrong",
                 message: "An unexpected error occurred while fetching the repository.",
