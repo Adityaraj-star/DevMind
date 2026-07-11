@@ -12,7 +12,7 @@ Paste code or drop a GitHub URL. DevMind maps every file, import, and dependency
 [![D3.js](https://img.shields.io/badge/D3.js-7-f9a03c?logo=d3.js&logoColor=white)](https://d3js.org)
 [![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)](https://vite.dev)
 
-[Live Demo] comingsoon &nbsp;·&nbsp; [Report a Bug](#) &nbsp;·&nbsp; [Roadmap](#roadmap--future-work)
+[Live Demo](https://dev-mind-peach.vercel.app) &nbsp;·&nbsp; [Report a Bug](#) &nbsp;·&nbsp; [Roadmap](#roadmap--future-work)
 
 </div>
 
