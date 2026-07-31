@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/Adityaraj-star/devmind-backend/internal/config"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/config"
 
 	"github.com/jackc/pgx/v5"
 	tern "github.com/jackc/tern/v2/migrate"

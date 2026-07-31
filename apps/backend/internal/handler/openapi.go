@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
 
 	"github.com/labstack/echo/v4"
 )

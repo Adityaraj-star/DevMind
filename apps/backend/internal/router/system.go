@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/Adityaraj-star/devmind-backend/internal/handler"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/handler"
 
 	"github.com/labstack/echo/v4"
 )

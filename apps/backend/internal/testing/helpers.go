@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/rs/zerolog"
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
 	"github.com/stretchr/testify/require"
 )
 

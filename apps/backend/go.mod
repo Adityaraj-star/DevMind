@@ -1,4 +1,4 @@
-module github.com/Adityaraj-star/devmind-backend
+module github.com/Adityaraj-star/DevMind/apps/backend
 
 go 1.24.5
 

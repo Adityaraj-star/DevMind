@@ -6,8 +6,8 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/rs/zerolog"
-	"github.com/Adityaraj-star/devmind-backend/internal/logger"
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/logger"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
 )
 
 const (

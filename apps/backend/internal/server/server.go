@@ -10,10 +10,10 @@ import (
 	"github.com/newrelic/go-agent/v3/integrations/nrredis-v9"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog"
-	"github.com/Adityaraj-star/devmind-backend/internal/config"
-	"github.com/Adityaraj-star/devmind-backend/internal/database"
-	"github.com/Adityaraj-star/devmind-backend/internal/lib/job"
-	loggerPkg "github.com/Adityaraj-star/devmind-backend/internal/logger"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/config"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/database"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/lib/job"
+	loggerPkg "github.com/Adityaraj-star/DevMind/apps/backend/internal/logger"
 )
 
 type Server struct {

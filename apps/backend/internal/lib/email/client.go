@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/resend/resend-go/v2"
 	"github.com/rs/zerolog"
-	"github.com/Adityaraj-star/devmind-backend/internal/config"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/config"
 )
 
 type Client struct {

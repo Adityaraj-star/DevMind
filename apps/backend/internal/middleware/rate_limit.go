@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
 )
 
 type RateLimitMiddleware struct {

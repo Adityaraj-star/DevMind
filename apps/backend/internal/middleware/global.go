@@ -7,9 +7,9 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
-	"github.com/Adityaraj-star/devmind-backend/internal/errs"
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
-	"github.com/Adityaraj-star/devmind-backend/internal/sqlerr"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/errs"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/sqlerr"
 )
 
 type GlobalMiddlewares struct {

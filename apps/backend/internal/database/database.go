@@ -14,8 +14,8 @@ import (
 	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/newrelic/go-agent/v3/integrations/nrpgx5"
 	"github.com/rs/zerolog"
-	"github.com/Adityaraj-star/devmind-backend/internal/config"
-	loggerConfig "github.com/Adityaraj-star/devmind-backend/internal/logger"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/config"
+	loggerConfig "github.com/Adityaraj-star/DevMind/apps/backend/internal/logger"
 )
 
 type Database struct {

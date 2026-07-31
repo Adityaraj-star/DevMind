@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Adityaraj-star/devmind-backend/internal/middleware"
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/middleware"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
 
 	"github.com/labstack/echo/v4"
 )

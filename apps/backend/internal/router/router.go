@@ -5,10 +5,10 @@ import (
 
 	"github.com/labstack/echo/v4"
 	echoMiddleware "github.com/labstack/echo/v4/middleware"
-	"github.com/Adityaraj-star/devmind-backend/internal/handler"
-	"github.com/Adityaraj-star/devmind-backend/internal/middleware"
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
-	"github.com/Adityaraj-star/devmind-backend/internal/service"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/handler"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/middleware"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/service"
 	"golang.org/x/time/rate"
 )
 

@@ -7,8 +7,8 @@ import (
 
 	"github.com/hibiken/asynq"
 	"github.com/rs/zerolog"
-	"github.com/Adityaraj-star/devmind-backend/internal/config"
-	"github.com/Adityaraj-star/devmind-backend/internal/lib/email"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/config"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/lib/email"
 )
 
 var emailClient *email.Client

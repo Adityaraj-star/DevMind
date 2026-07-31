@@ -4,9 +4,9 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/Adityaraj-star/devmind-backend/internal/config"
-	"github.com/Adityaraj-star/devmind-backend/internal/database"
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/config"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/database"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
 )
 
 // CreateTestServer creates a server instance for testing

@@ -8,14 +8,14 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/Adityaraj-star/devmind-backend/internal/config"
-	"github.com/Adityaraj-star/devmind-backend/internal/database"
-	"github.com/Adityaraj-star/devmind-backend/internal/handler"
-	"github.com/Adityaraj-star/devmind-backend/internal/logger"
-	"github.com/Adityaraj-star/devmind-backend/internal/repository"
-	"github.com/Adityaraj-star/devmind-backend/internal/router"
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
-	"github.com/Adityaraj-star/devmind-backend/internal/service"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/config"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/database"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/handler"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/logger"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/repository"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/router"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/service"
 )
 
 const DefaultContextTimeout = 30

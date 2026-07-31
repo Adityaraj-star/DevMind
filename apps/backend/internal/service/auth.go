@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
 
 	"github.com/clerk/clerk-sdk-go/v2"
 )

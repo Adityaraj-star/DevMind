@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/Adityaraj-star/devmind-backend/internal/lib/job"
-	"github.com/Adityaraj-star/devmind-backend/internal/repository"
-	"github.com/Adityaraj-star/devmind-backend/internal/server"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/lib/job"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/repository"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/server"
 )
 
 type Services struct {

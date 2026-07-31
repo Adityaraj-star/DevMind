@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Adityaraj-star/devmind-backend/internal/errs"
+	"github.com/Adityaraj-star/DevMind/apps/backend/internal/errs"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
